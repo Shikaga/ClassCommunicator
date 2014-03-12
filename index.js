@@ -78,4 +78,7 @@ io.sockets.on('connection', function (socket) {
   socket.on('_onMouseUpInDrawingMode', function (data) {
     socket.broadcast.emit("_onMouseUpInDrawingMode", data);
   });
+  socket.on('_onMouseUp', function (data) {
+    socket.broadcast.emit("_onMouseUp", data);
+  });
 });

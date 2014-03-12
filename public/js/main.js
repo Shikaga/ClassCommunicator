@@ -17,6 +17,9 @@ socket.on('_onMouseMoveInDrawingMode', function(data) {
 socket.on('_onMouseUpInDrawingMode', function() {
     _onMouseUpInDrawingMode(canvas)
 })
+socket.on('_onMouseUp', function() {
+    _onMouseUp(canvas)
+})
 
   x = canvas;
 
@@ -28,10 +31,18 @@ meld.around(canvas, "_onMouseMove", function(joinPoint) {
   // joinPoint.proceed();
 })
 
+function _onMouseUp() {
+  x = function() {
+    r = function (e,t,n){e.removeEventListener(t,n,!1)};
+    n = function (e,t,n){e.addEventListener(t,n,!1)};
+    _onMouseUpInDrawingMode(canvas), r(fabric.document, "mouseup", this._onMouseUp), r(fabric.document, "touchend", this._onMouseUp), r(fabric.document, "mousemove", this._onMouseMove), r(fabric.document, "touchmove", this._onMouseMove), n(this.upperCanvasEl, "mousemove", this._onMouseMove), n(this.upperCanvasEl, "touchmove", this._onMouseMove)
+  }.bind(canvas);
+  x();
+}
+
 meld.around(canvas, "_onMouseUp", function(joinPoint) {
-  // debugger;
-  // joinPoint.proceed();
-  // this.__onMouseUp(e), r(fabric.document, "mouseup", this._onMouseUp), r(fabric.document, "touchend", this._onMouseUp), r(fabric.document, "mousemove", this._onMouseMove), r(fabric.document, "touchmove", this._onMouseMove), n(this.upperCanvasEl, "mousemove", this._onMouseMove), n(this.upperCanvasEl, "touchmove", this._onMouseMove)
+  _onMouseUp();
+  socket.emit("_onMouseUp", t);
 })
 
 function _onMouseDownInDrawingMode(canvas, t) {
