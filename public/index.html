@@ -13,8 +13,10 @@
 </body>
 <script>
 	require(['./js/CanvasHandler', './js/FreeDrawingHandler'], function(CanvasHandler, FreeDrawingHandler) {
+
+		var socket = io.connect(window.location.href);
 		var ch = new CanvasHandler();
-		var fdh = new FreeDrawingHandler(ch.getCanvas());
+		var fdh = new FreeDrawingHandler(socket, ch.getCanvas());
 	})
 </script>
 </html>

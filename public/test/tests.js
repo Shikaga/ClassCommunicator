@@ -1,24 +1,27 @@
-test( "add test", function() {
-    equal(5, add(2,3));
-  ok( 2 == add(1,1), "Passed!" );
-});
+require(
+    ['../js/FreeDrawingHandler'],
+    function(FreeDrawingHandler) {
 
-test( "sub test", function() {
-    equal(2, sub(5,3));
-});
+      var MockSocketIo = function() {
+          this.on = sinon.spy();
+          this.callbackOn = function(message, data) {
+            for (var i=0; i < this.on.callCount; i++) {
+              var call = this.on.getCall(i);
+              if (call.args[0] === message) {
+                call.args[1](data);
+              }
+            }
+          };
+      }
 
-test("time dilation!", function() {
-    
-    var clock = this.sandbox.useFakeTimers();
+      test( "add test", function() {
+          var mockSocketIo = new MockSocketIo();
+          var mockCanvas = {};
+          var fdh = new FreeDrawingHandler(mockSocketIo, mockCanvas);
+          fdh._onMouseDownInDrawingMode = sinon.spy();
+          mockSocketIo.callbackOn('_onMouseDownInDrawingMode', {});
+          equal(true, fdh._onMouseDownInDrawingMode.calledOnce);
+      });
 
-    var x = 0;
-    setTimeout(function() { x = 2 }, 1000);
-
-    clock.tick(999);
-    equal(0, x);
-
-    clock.tick(1);
-    equal(2, x);
-
-    clock.restore();
-});
+    }
+);

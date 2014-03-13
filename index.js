@@ -70,15 +70,15 @@ console.log("Using port: " + port);
 
 io.sockets.on('connection', function (socket) {
   socket.on('_onMouseDownInDrawingMode', function (data) {
-    socket.broadcast.emit("_onMouseDownInDrawingMode", data);
+    socket.broadcast.emit("_onMouseDownInDrawingMode", {data: data, socketid: socket.id});
   });
   socket.on('_onMouseMoveInDrawingMode', function (data) {
-    socket.broadcast.emit("_onMouseMoveInDrawingMode", data);
+    socket.broadcast.emit("_onMouseMoveInDrawingMode", {data: data, socketid: socket.id});
   });
   socket.on('_onMouseUpInDrawingMode', function (data) {
-    socket.broadcast.emit("_onMouseUpInDrawingMode", data);
+    socket.broadcast.emit("_onMouseUpInDrawingMode", {data: data, socketid: socket.id});
   });
   socket.on('_onMouseUp', function (data) {
-    socket.broadcast.emit("_onMouseUp", data);
+    socket.broadcast.emit("_onMouseUp", {data: data, socketid: socket.id});
   });
 });
