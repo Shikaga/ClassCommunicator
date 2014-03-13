@@ -11,6 +11,10 @@
 <div id="testbar"><a class="testbar" href="test/test.html" target="_blank">Run the Tests!</a></div>
 <canvas id='c' width='640px' height='480px' style='border: 1px solid black'></canvas>
 </body>
-<script type="text/javascript" src="js/main.js"></script>
-
+<script>
+	require(['./js/CanvasHandler', './js/FreeDrawingHandler'], function(CanvasHandler, FreeDrawingHandler) {
+		var ch = new CanvasHandler();
+		var fdh = new FreeDrawingHandler(ch.getCanvas());
+	})
+</script>
 </html>
