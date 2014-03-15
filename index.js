@@ -6,7 +6,8 @@ var express = require('express')
 	, stylus = require('stylus')
 	, nib = require('nib')
 	, sio = require('socket.io')
-	, fs = require('fs');
+	, fs = require('fs')
+  , MessageHandler = require('./MessageHandler')
 
 /**
  * App.
@@ -68,17 +69,4 @@ if (process.env.PORT) {
 
 console.log("Using port: " + port);
 
-io.sockets.on('connection', function (socket) {
-  socket.on('_onMouseDownInDrawingMode', function (data) {
-    socket.broadcast.emit("_onMouseDownInDrawingMode", {data: data, socketid: socket.id});
-  });
-  socket.on('_onMouseMoveInDrawingMode', function (data) {
-    socket.broadcast.emit("_onMouseMoveInDrawingMode", {data: data, socketid: socket.id});
-  });
-  socket.on('_onMouseUpInDrawingMode', function (data) {
-    socket.broadcast.emit("_onMouseUpInDrawingMode", {data: data, socketid: socket.id});
-  });
-  socket.on('_onMouseUp', function (data) {
-    socket.broadcast.emit("_onMouseUp", {data: data, socketid: socket.id});
-  });
-});
+var messageHandler = new MessageHandler(io);
