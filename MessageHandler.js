@@ -12,6 +12,11 @@
       })
     }
 
+  this.clearMessages = function(socket) {
+      this.storedMessages = [];
+      socket.broadcast.emit('clear');
+  }.bind(this);
+
     io.sockets.on('connection', function (socket) {
       this.sendStoredMessages(socket);
       socket.on('_onMouseDownInDrawingMode', function (data) {
@@ -25,6 +30,9 @@
       }.bind(this));
       socket.on('_onMouseUp', function (data) {
         this.sendMessage(socket, "_onMouseUp", {data: data, socketid: socket.id});
+      }.bind(this));
+      socket.on('clear', function (data) {
+        this.clearMessages(socket);
       }.bind(this));
     }.bind(this));
   }

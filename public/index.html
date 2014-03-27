@@ -10,13 +10,19 @@
 <body>
 <div id="testbar"><a class="testbar" href="test/test.html" target="_blank">Run the Tests!</a></div>
 <canvas id='c' width='640px' height='480px' style='border: 1px solid black'></canvas>
+<button id="clearCanvas" data-bind="click: clearCanvas">Clear</button>
 </body>
 <script>
-	require(['./js/CanvasHandler', './js/FreeDrawingHandler'], function(CanvasHandler, FreeDrawingHandler) {
+	require(['./js/CanvasHandler', './js/FreeDrawingHandler', './lib/knockout'], function(CanvasHandler, FreeDrawingHandler, ko) {
 
 		var socket = io.connect(window.location.href);
-		var ch = new CanvasHandler();
+		var ch = new CanvasHandler(socket);
 		var fdh = new FreeDrawingHandler(socket, ch.getCanvas());
+		this.clearCanvas = function() {
+			ch.clear();
+			socket.emit('clear');
+		}
+		ko.applyBindings(this, document.getElementById('clearCanvas'))
 	})
 </script>
 </html>
